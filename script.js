@@ -51,14 +51,17 @@ function createTodoItem(todoText, completed = false) {
 	const editButton = document.createElement('button');
 	editButton.type = 'button';
 	editButton.className = 'edit-button';
-	editButton.textContent = '✎';
+	editButton.innerHTML = '<span class="pencil-icon" aria-hidden="true"></span>';
 	editButton.setAttribute('aria-label', 'Düzenle');
 
 	const deleteButton = document.createElement('button');
 	deleteButton.type = 'button';
 	deleteButton.className = 'delete-button';
-	deleteButton.textContent = '🧽';
 	deleteButton.setAttribute('aria-label', 'Görevi sil');
+	deleteButton.title = 'Görevi sil';
+	deleteButton.appendChild(document.createElement('span'));
+	deleteButton.firstElementChild.className = 'trash-icon';
+	deleteButton.firstElementChild.setAttribute('aria-hidden', 'true');
 
 	const timer = document.createElement('div');
 	timer.className = 'pomodoro-timer';
@@ -93,7 +96,7 @@ function createTodoItem(todoText, completed = false) {
 				text.textContent = updatedText;
 				editInput.replaceWith(text);
 				todoItem.classList.remove('editing');
-				editButton.textContent = '✎';
+				editButton.innerHTML = '<span class="pencil-icon" aria-hidden="true"></span>';
 				editButton.setAttribute('aria-label', 'Düzenle');
 				saveTodos();
 			}
@@ -193,9 +196,11 @@ clearAllButton.addEventListener('click', () => {
 });
 
 personalNoteButton.addEventListener('click', () => {
+	const buttonLabel = personalNoteButton.querySelector('.button-label');
+
 	if (personalNoteInput.readOnly) {
 		personalNoteInput.readOnly = false;
-		personalNoteButton.textContent = 'Kaydet';
+		buttonLabel.textContent = 'Kaydet';
 		personalNoteInput.focus();
 		return;
 	}
@@ -203,7 +208,7 @@ personalNoteButton.addEventListener('click', () => {
 	personalNoteInput.value = personalNoteInput.value.trim();
 	localStorage.setItem(personalNoteStorageKey, personalNoteInput.value);
 	personalNoteInput.readOnly = true;
-	personalNoteButton.textContent = 'Düzenle';
+	buttonLabel.textContent = 'Düzenle';
 });
 
 const savedBackgroundIndex = Number.parseInt(localStorage.getItem(backgroundStorageKey) || '0', 10);

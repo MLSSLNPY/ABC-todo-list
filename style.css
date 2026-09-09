@@ -162,6 +162,15 @@ h1 {
 	margin-top: 8px;
 }
 
+.add-icon {
+	display: inline-block;
+	margin-right: 6px;
+	font-size: 20px;
+	font-weight: 300;
+	line-height: 0;
+	vertical-align: -2px;
+}
+
 .empty-input-message {
 	margin: 12px 0 0;
 	padding: 11px 14px;
@@ -224,6 +233,40 @@ button:hover {
 	font-size: 18px;
 	line-height: 1;
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.trash-icon {
+	display: inline-block;
+	position: relative;
+	width: 13px;
+	height: 14px;
+	border: 1.5px solid currentColor;
+	border-top: 0;
+	border-radius: 0 0 3px 3px;
+	vertical-align: -2px;
+}
+
+.trash-icon::before {
+	content: '';
+	position: absolute;
+	top: -4px;
+	left: -3px;
+	width: 17px;
+	height: 1.5px;
+	background: currentColor;
+	border-radius: 2px;
+}
+
+.trash-icon::after {
+	content: '';
+	position: absolute;
+	top: -7px;
+	left: 3px;
+	width: 5px;
+	height: 3px;
+	border: 1.5px solid currentColor;
+	border-bottom: 0;
+	border-radius: 2px 2px 0 0;
 }
 
 .clear-all-button:hover {
@@ -339,13 +382,52 @@ button:hover {
 	padding: 3px 7px;
 	color: #d19a00;
 	background: transparent;
-	font-size: 24px;
 	line-height: 1;
+}
+
+.pencil-icon {
+	display: inline-block;
+	position: relative;
+	width: 16px;
+	height: 6px;
+	background: currentColor;
+	border-radius: 2px 1px 1px 2px;
+	transform: rotate(-45deg);
+	vertical-align: middle;
+}
+
+.pencil-icon::before {
+	content: '';
+	position: absolute;
+	right: -5px;
+	top: 0;
+	border-top: 3px solid transparent;
+	border-bottom: 3px solid transparent;
+	border-left: 5px solid currentColor;
+}
+
+.pencil-icon::after {
+	content: '';
+	position: absolute;
+	left: 2px;
+	top: 0;
+	width: 2px;
+	height: 6px;
+	background: rgba(255, 255, 255, 0.7);
 }
 
 .edit-button:hover {
 	color: #a97800;
 	background: #fff3c4;
+}
+
+.edit-button .pencil-icon {
+	color: currentColor;
+}
+
+.personal-note-button .pencil-icon {
+	margin-right: 5px;
+	transform: rotate(-45deg) scale(0.8);
 }
 
 .delete-button {
@@ -354,10 +436,13 @@ button:hover {
 	color: #ffffff;
 	background: #8d9691;
 	border: 1px solid #7b837e;
-	font-size: 18px;
-	font-weight: bold;
+	font-size: 0;
 	line-height: 1;
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.delete-button .trash-icon {
+	color: #ffffff;
 }
 
 .delete-button:hover {

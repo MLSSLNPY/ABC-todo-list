@@ -25,6 +25,7 @@ body {
 .todo-container {
 	width: min(100%, 780px);
 	padding: 36px;
+	opacity: 0.7;
 	background: #f8fcf8;
 	border: 1px solid #c9e4d0;
 	border-radius: 12px;
@@ -63,42 +64,41 @@ h1 {
 }
 
 .personal-note {
-	margin: 26px auto 0;
-	padding: 18px 20px 16px;
-	background: #f4f8e9;
-	border: 1px solid #d9e3b8;
-	border-left: 4px solid #b4c878;
-	border-radius: 8px;
-	box-shadow: 0 5px 14px rgba(96, 115, 57, 0.08);
+	margin: 22px auto 0;
+	padding: 14px 16px;
+	background: rgba(244, 248, 233, 0.5);
+	border: 1px solid rgba(217, 227, 184, 0.5);
+	border-left: 2px solid rgba(180, 200, 120, 0.65);
+	border-radius: 6px;
 }
 
 .personal-note-heading {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin-bottom: 10px;
+	margin-bottom: 7px;
 }
 
 .personal-note-heading h2 {
 	margin: 0;
 	color: #536b39;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 600;
 }
 
 .personal-note-heading span {
 	color: #a2b66c;
-	font-size: 20px;
+	font-size: 16px;
 }
 
 .personal-note-input {
 	display: block;
 	width: 100%;
-	min-height: 76px;
+	min-height: 58px;
 	resize: vertical;
 	color: #536044;
-	background: rgba(255, 255, 255, 0.72);
-	border-color: #d1dcae;
+	background: rgba(255, 255, 255, 0.5);
+	border-color: rgba(209, 220, 174, 0.5);
 	font-size: 15px;
 	line-height: 1.5;
 }
@@ -109,12 +109,12 @@ h1 {
 
 .personal-note-button {
 	display: block;
-	margin: 10px 0 0 auto;
-	padding: 8px 16px;
+	margin: 7px 0 0 auto;
+	padding: 6px 12px;
 	color: #536b39;
-	background: #e2ebc6;
-	border: 1px solid #c7d59a;
-	font-size: 14px;
+	background: rgba(226, 235, 198, 0.5);
+	border: 1px solid rgba(199, 213, 154, 0.5);
+	font-size: 13px;
 }
 
 .personal-note-button:hover {

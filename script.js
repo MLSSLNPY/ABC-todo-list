@@ -2,15 +2,27 @@ const todoForm = document.querySelector('#todo-form');
 const todoInput = document.querySelector('#todo-input');
 const todoList = document.querySelector('#todo-list');
 const clearAllButton = document.querySelector('#clear-all-button');
+const storageKey = 'todoItems';
 
-function createTodoItem(todoText) {
+function saveTodos() {
+	const todos = [...todoList.querySelectorAll('.todo-item')].map((todoItem) => ({
+		text: todoItem.querySelector('.todo-text').textContent,
+		completed: todoItem.querySelector('.todo-checkbox').checked
+	}));
+
+	localStorage.setItem(storageKey, JSON.stringify(todos));
+}
+
+function createTodoItem(todoText, completed = false) {
 	const todoItem = document.createElement('li');
 	todoItem.className = 'todo-item';
 
 	const checkbox = document.createElement('input');
 	checkbox.type = 'checkbox';
 	checkbox.className = 'todo-checkbox';
+	checkbox.checked = completed;
 	checkbox.setAttribute('aria-label', `${todoText} tamamlandı`);
+	todoItem.classList.toggle('completed', completed);
 
 	const text = document.createElement('span');
 	text.className = 'todo-text';
@@ -31,6 +43,7 @@ function createTodoItem(todoText) {
 
 	checkbox.addEventListener('change', () => {
 		todoItem.classList.toggle('completed', checkbox.checked);
+		saveTodos();
 	});
 
 	editButton.addEventListener('click', () => {
@@ -47,6 +60,7 @@ function createTodoItem(todoText) {
 				todoItem.classList.remove('editing');
 				editButton.textContent = '✎';
 				editButton.setAttribute('aria-label', 'Düzenle');
+				saveTodos();
 			}
 			return;
 		}
@@ -65,6 +79,7 @@ function createTodoItem(todoText) {
 
 	deleteButton.addEventListener('click', () => {
 		todoItem.remove();
+		saveTodos();
 	});
 
 	return todoItem;
@@ -79,6 +94,7 @@ todoForm.addEventListener('submit', (event) => {
 	}
 
 	todoList.appendChild(createTodoItem(todoText));
+	saveTodos();
 
 	todoInput.value = '';
 	todoInput.focus();
@@ -86,4 +102,10 @@ todoForm.addEventListener('submit', (event) => {
 
 clearAllButton.addEventListener('click', () => {
 	todoList.replaceChildren();
+	saveTodos();
+});
+
+const savedTodos = JSON.parse(localStorage.getItem(storageKey) || '[]');
+savedTodos.forEach((todo) => {
+	todoList.appendChild(createTodoItem(todo.text, todo.completed));
 });

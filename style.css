@@ -19,7 +19,7 @@ body {
 }
 
 .todo-container {
-	width: min(100%, 520px);
+	width: min(100%, 780px);
 	padding: 36px;
 	background: #f8fcf8;
 	border: 1px solid #c9e4d0;
@@ -37,6 +37,42 @@ h1 {
 .todo-form {
 	display: flex;
 	gap: 10px;
+}
+
+.todo-columns {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 14px;
+	margin-top: 22px;
+}
+
+.todo-column {
+	min-width: 0;
+	padding: 16px;
+	background: #eef8f0;
+	border: 1px solid #c9e4d0;
+	border-radius: 8px;
+}
+
+.todo-column h2 {
+	margin: 0 0 12px;
+	color: #2f6345;
+	font-size: 24px;
+	text-align: center;
+}
+
+.todo-column .todo-form {
+	display: block;
+}
+
+.todo-column .todo-input {
+	display: block;
+	width: 100%;
+}
+
+.todo-column .todo-form button {
+	width: 100%;
+	margin-top: 8px;
 }
 
 .empty-input-message {
@@ -113,7 +149,7 @@ button:hover {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	margin: 12px 0 0;
+	margin: 14px 0 0;
 	padding: 0;
 	list-style: none;
 }
@@ -133,6 +169,16 @@ button:hover {
 	background: #e2f1e5;
 	border: 1px solid #c9e4d0;
 	border-radius: 7px;
+}
+
+.todo-column .todo-item {
+	align-items: flex-start;
+	padding: 10px;
+}
+
+.todo-column .todo-checkbox {
+	flex: 0 0 auto;
+	margin-top: 3px;
 }
 
 .todo-checkbox {
@@ -201,5 +247,9 @@ button:hover {
 
 	.todo-container {
 		padding: 26px 20px;
+	}
+
+	.todo-columns {
+		grid-template-columns: 1fr;
 	}
 }

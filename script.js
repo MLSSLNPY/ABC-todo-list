@@ -1,16 +1,15 @@
-const todoForm = document.querySelector('#todo-form');
-const todoInput = document.querySelector('#todo-input');
-const todoList = document.querySelector('#todo-list');
+const todoColumns = [...document.querySelectorAll('.todo-column')];
 const clearAllButton = document.querySelector('#clear-all-button');
 const emptyInputMessage = document.querySelector('#empty-input-message');
 const todoCount = document.querySelector('#todo-count');
 const storageKey = 'todoItems';
 
 function saveTodos() {
-	const todos = [...todoList.querySelectorAll('.todo-item')].map((todoItem) => ({
+	const todos = todoColumns.flatMap((column) => [...column.querySelectorAll('.todo-item')].map((todoItem) => ({
+		column: column.dataset.column,
 		text: todoItem.querySelector('.todo-text').textContent,
 		completed: todoItem.querySelector('.todo-checkbox').checked
-	}));
+	})));
 
 	localStorage.setItem(storageKey, JSON.stringify(todos));
 	todoCount.textContent = `Toplam görev: ${todos.length}`;
@@ -88,31 +87,38 @@ function createTodoItem(todoText, completed = false) {
 	return todoItem;
 }
 
-todoForm.addEventListener('submit', (event) => {
-	event.preventDefault();
+todoColumns.forEach((column) => {
+	const form = column.querySelector('.todo-form');
+	const input = column.querySelector('.todo-input');
+	const list = column.querySelector('.todo-list');
 
-	const todoText = todoInput.value.trim();
-	if (!todoText) {
-		emptyInputMessage.hidden = false;
-		todoInput.focus();
-		return;
-	}
+	form.addEventListener('submit', (event) => {
+		event.preventDefault();
 
-	emptyInputMessage.hidden = true;
-	todoList.appendChild(createTodoItem(todoText));
-	saveTodos();
+		const todoText = input.value.trim();
+		if (!todoText) {
+			emptyInputMessage.hidden = false;
+			input.focus();
+			return;
+		}
 
-	todoInput.value = '';
-	todoInput.focus();
+		emptyInputMessage.hidden = true;
+		list.appendChild(createTodoItem(todoText));
+		saveTodos();
+
+		input.value = '';
+		input.focus();
+	});
 });
 
 clearAllButton.addEventListener('click', () => {
-	todoList.replaceChildren();
+	todoColumns.forEach((column) => column.querySelector('.todo-list').replaceChildren());
 	saveTodos();
 });
 
 const savedTodos = JSON.parse(localStorage.getItem(storageKey) || '[]');
 savedTodos.forEach((todo) => {
-	todoList.appendChild(createTodoItem(todo.text, todo.completed));
+	const column = todoColumns.find((item) => item.dataset.column === todo.column) || todoColumns[0];
+	column.querySelector('.todo-list').appendChild(createTodoItem(todo.text, todo.completed));
 });
 saveTodos();

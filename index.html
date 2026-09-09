@@ -3,26 +3,50 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Yapılacaklar</title>
+	<title>ABC Stili Planlama</title>
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
 	<main class="todo-container">
-		<h1>Yapılacaklar</h1>
+		<h1>ABC Stili Planlama</h1>
 
-		<form class="todo-form" id="todo-form">
-			<input type="text" id="todo-input" placeholder="Bir görev yazın" aria-label="Görev">
-			<button type="submit">Ekle</button>
-		</form>
 		<p class="empty-input-message" id="empty-input-message" role="alert" hidden>
 			<span aria-hidden="true">🙂</span>
 			Boşluğun bir iş olması için astronot olmalısın.
 		</p>
 
+		<div class="todo-columns">
+			<section class="todo-column" data-column="A">
+				<h2>A</h2>
+				<form class="todo-form">
+					<input type="text" class="todo-input" placeholder="Bir görev yazın" aria-label="A kolonu görevi">
+					<button type="submit">Ekle</button>
+				</form>
+				<ul class="todo-list"></ul>
+			</section>
+
+			<section class="todo-column" data-column="B">
+				<h2>B</h2>
+				<form class="todo-form">
+					<input type="text" class="todo-input" placeholder="Bir görev yazın" aria-label="B kolonu görevi">
+					<button type="submit">Ekle</button>
+				</form>
+				<ul class="todo-list"></ul>
+			</section>
+
+			<section class="todo-column" data-column="C">
+				<h2>C</h2>
+				<form class="todo-form">
+					<input type="text" class="todo-input" placeholder="Bir görev yazın" aria-label="C kolonu görevi">
+					<button type="submit">Ekle</button>
+				</form>
+				<ul class="todo-list"></ul>
+			</section>
+		</div>
+
 		<div class="list-actions">
 			<button type="button" class="clear-all-button" id="clear-all-button" aria-label="Tümünü sil" title="Tümünü sil">🗑️</button>
 		</div>
-		<ul class="todo-list" id="todo-list"></ul>
 		<p class="todo-count" id="todo-count" aria-live="polite">Toplam görev: 0</p>
 	</main>
 

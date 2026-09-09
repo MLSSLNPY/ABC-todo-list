@@ -2,6 +2,7 @@ const todoForm = document.querySelector('#todo-form');
 const todoInput = document.querySelector('#todo-input');
 const todoList = document.querySelector('#todo-list');
 const clearAllButton = document.querySelector('#clear-all-button');
+const emptyInputMessage = document.querySelector('#empty-input-message');
 const storageKey = 'todoItems';
 
 function saveTodos() {
@@ -90,9 +91,12 @@ todoForm.addEventListener('submit', (event) => {
 
 	const todoText = todoInput.value.trim();
 	if (!todoText) {
+		emptyInputMessage.hidden = false;
+		todoInput.focus();
 		return;
 	}
 
+	emptyInputMessage.hidden = true;
 	todoList.appendChild(createTodoItem(todoText));
 	saveTodos();
 

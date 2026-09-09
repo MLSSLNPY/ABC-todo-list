@@ -39,6 +39,25 @@ h1 {
 	gap: 10px;
 }
 
+.empty-input-message {
+	margin: 12px 0 0;
+	padding: 11px 14px;
+	color: #805b00;
+	background: #fff5cf;
+	border: 1px solid #efd98b;
+	border-radius: 7px;
+	font-size: 14px;
+	line-height: 1.4;
+	text-align: center;
+}
+
+.empty-input-message span {
+	display: inline-block;
+	margin-right: 5px;
+	font-size: 18px;
+	vertical-align: -2px;
+}
+
 input {
 	min-width: 0;
 	flex: 1;

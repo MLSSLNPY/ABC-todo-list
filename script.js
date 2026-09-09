@@ -1,6 +1,7 @@
 const todoForm = document.querySelector('#todo-form');
 const todoInput = document.querySelector('#todo-input');
 const todoList = document.querySelector('#todo-list');
+const clearAllButton = document.querySelector('#clear-all-button');
 
 function createTodoItem(todoText) {
 	const todoItem = document.createElement('li');
@@ -81,4 +82,8 @@ todoForm.addEventListener('submit', (event) => {
 
 	todoInput.value = '';
 	todoInput.focus();
+});
+
+clearAllButton.addEventListener('click', () => {
+	todoList.replaceChildren();
 });

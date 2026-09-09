@@ -79,11 +79,72 @@ button:hover {
 }
 
 .todo-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
 	padding: 13px 15px;
 	background: #e2f1e5;
 	border: 1px solid #c9e4d0;
 	border-radius: 7px;
+}
+
+.todo-checkbox {
+	width: 18px;
+	height: 18px;
+	margin: 0;
+	accent-color: #79ad87;
+}
+
+.todo-text {
+	flex: 1;
 	overflow-wrap: anywhere;
+}
+
+.completed .todo-text {
+	color: #6d8574;
+	text-decoration: line-through;
+}
+
+.edit-input {
+	min-width: 0;
+	flex: 1;
+	padding: 7px 9px;
+	color: #315343;
+	background: #ffffff;
+	border: 1px solid #b9d8c1;
+	border-radius: 5px;
+	font-size: 16px;
+}
+
+.edit-button {
+	flex: 0 0 auto;
+	padding: 3px 7px;
+	color: #d19a00;
+	background: transparent;
+	font-size: 24px;
+	line-height: 1;
+}
+
+.edit-button:hover {
+	color: #a97800;
+	background: #fff3c4;
+}
+
+.delete-button {
+	flex: 0 0 auto;
+	padding: 7px 11px;
+	color: #ffffff;
+	background: #8d9691;
+	border: 1px solid #7b837e;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 1;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.delete-button:hover {
+	transform: scale(1.06);
+	box-shadow: 0 0 10px rgba(233, 139, 170, 0.65);
 }
 
 @media (max-width: 480px) {

@@ -4,10 +4,23 @@ const emptyInputMessage = document.querySelector('#empty-input-message');
 const todoCount = document.querySelector('#todo-count');
 const personalNoteInput = document.querySelector('#personal-note-input');
 const personalNoteButton = document.querySelector('#personal-note-button');
+const backgroundChangeButton = document.querySelector('#background-change-button');
 const storageKey = 'todoItems';
 const personalNoteStorageKey = 'personalNote';
+const backgroundStorageKey = 'backgroundImageIndex';
+const backgroundImages = [
+	'beautiful-landscape-with-lot-fir-trees-mountains.jpg',
+	'beautiful-shot-forest-with-yellow-green-leafed-trees-with-sun-shining-through-branches.jpg',
+	'misty-rain-falling-coniferous-forest.jpg',
+	'morning-fog-forest.jpg'
+];
 const pomodoroDuration = 25 * 60;
 let activeTimer = null;
+
+function setBackground(index) {
+	document.body.style.backgroundImage = `url("resimler/${backgroundImages[index]}")`;
+	localStorage.setItem(backgroundStorageKey, index.toString());
+}
 
 function saveTodos() {
 	const todos = todoColumns.flatMap((column) => [...column.querySelectorAll('.todo-item')].map((todoItem) => ({
@@ -191,6 +204,17 @@ personalNoteButton.addEventListener('click', () => {
 	localStorage.setItem(personalNoteStorageKey, personalNoteInput.value);
 	personalNoteInput.readOnly = true;
 	personalNoteButton.textContent = 'Düzenle';
+});
+
+const savedBackgroundIndex = Number.parseInt(localStorage.getItem(backgroundStorageKey) || '0', 10);
+let backgroundIndex = Number.isInteger(savedBackgroundIndex) && savedBackgroundIndex >= 0 && savedBackgroundIndex < backgroundImages.length
+	? savedBackgroundIndex
+	: 0;
+setBackground(backgroundIndex);
+
+backgroundChangeButton.addEventListener('click', () => {
+	backgroundIndex = (backgroundIndex + 1) % backgroundImages.length;
+	setBackground(backgroundIndex);
 });
 
 const savedTodos = JSON.parse(localStorage.getItem(storageKey) || '[]');

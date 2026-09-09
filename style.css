@@ -118,6 +118,13 @@ button:hover {
 	list-style: none;
 }
 
+.todo-count {
+	margin: 14px 0 0;
+	color: #6d8574;
+	font-size: 14px;
+	text-align: right;
+}
+
 .todo-item {
 	display: flex;
 	align-items: center;

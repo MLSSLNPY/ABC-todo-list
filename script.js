@@ -3,6 +3,7 @@ const todoInput = document.querySelector('#todo-input');
 const todoList = document.querySelector('#todo-list');
 const clearAllButton = document.querySelector('#clear-all-button');
 const emptyInputMessage = document.querySelector('#empty-input-message');
+const todoCount = document.querySelector('#todo-count');
 const storageKey = 'todoItems';
 
 function saveTodos() {
@@ -12,6 +13,7 @@ function saveTodos() {
 	}));
 
 	localStorage.setItem(storageKey, JSON.stringify(todos));
+	todoCount.textContent = `Toplam görev: ${todos.length}`;
 }
 
 function createTodoItem(todoText, completed = false) {
@@ -113,3 +115,4 @@ const savedTodos = JSON.parse(localStorage.getItem(storageKey) || '[]');
 savedTodos.forEach((todo) => {
 	todoList.appendChild(createTodoItem(todo.text, todo.completed));
 });
+saveTodos();

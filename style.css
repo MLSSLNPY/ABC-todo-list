@@ -241,6 +241,7 @@ button:hover {
 
 .todo-column .todo-item {
 	align-items: flex-start;
+	flex-wrap: wrap;
 	padding: 10px;
 }
 
@@ -254,6 +255,43 @@ button:hover {
 	height: 18px;
 	margin: 0;
 	accent-color: #79ad87;
+}
+
+.pomodoro-timer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	margin-top: 4px;
+	padding-top: 8px;
+	border-top: 1px solid #c9e4d0;
+}
+
+.timer-display {
+	color: #536b39;
+	font-size: 18px;
+	font-variant-numeric: tabular-nums;
+	font-weight: 600;
+	letter-spacing: 1px;
+}
+
+.timer-button {
+	padding: 6px 10px;
+	color: #536b39;
+	background: #e2ebc6;
+	border: 1px solid #c7d59a;
+	font-size: 13px;
+}
+
+.timer-button:hover {
+	background: #d7e3b2;
+}
+
+.timer-button:disabled {
+	color: #7f8978;
+	background: #e3e8df;
+	border-color: #d2d9cd;
+	cursor: default;
 }
 
 .todo-text {

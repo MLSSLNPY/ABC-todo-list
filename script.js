@@ -6,6 +6,8 @@ const personalNoteInput = document.querySelector('#personal-note-input');
 const personalNoteButton = document.querySelector('#personal-note-button');
 const storageKey = 'todoItems';
 const personalNoteStorageKey = 'personalNote';
+const pomodoroDuration = 25 * 60;
+let activeTimer = null;
 
 function saveTodos() {
 	const todos = todoColumns.flatMap((column) => [...column.querySelectorAll('.todo-item')].map((todoItem) => ({
@@ -44,7 +46,22 @@ function createTodoItem(todoText, completed = false) {
 	deleteButton.className = 'delete-button';
 	deleteButton.textContent = '🧽';
 	deleteButton.setAttribute('aria-label', 'Görevi sil');
-	todoItem.append(checkbox, text, editButton, deleteButton);
+
+	const timer = document.createElement('div');
+	timer.className = 'pomodoro-timer';
+
+	const timerDisplay = document.createElement('span');
+	timerDisplay.className = 'timer-display';
+	timerDisplay.textContent = '25:00';
+	timerDisplay.setAttribute('aria-label', 'Pomodoro süresi');
+
+	const timerButton = document.createElement('button');
+	timerButton.type = 'button';
+	timerButton.className = 'timer-button';
+	timerButton.textContent = 'Başlat';
+	timerButton.setAttribute('aria-label', `${todoText} için Pomodoro sayacını başlat`);
+	timer.append(timerDisplay, timerButton);
+	todoItem.append(checkbox, text, editButton, deleteButton, timer);
 
 	checkbox.addEventListener('change', () => {
 		todoItem.classList.toggle('completed', checkbox.checked);
@@ -83,8 +100,47 @@ function createTodoItem(todoText, completed = false) {
 	});
 
 	deleteButton.addEventListener('click', () => {
+		if (activeTimer?.item === todoItem) {
+			clearInterval(activeTimer.interval);
+			activeTimer = null;
+		}
 		todoItem.remove();
 		saveTodos();
+	});
+
+	timerButton.addEventListener('click', () => {
+		if (activeTimer?.item === todoItem) {
+			clearInterval(activeTimer.interval);
+			activeTimer = null;
+			timerButton.textContent = 'Devam et';
+			timerButton.setAttribute('aria-label', `${todoText} için Pomodoro sayacını devam ettir`);
+			return;
+		}
+
+		if (activeTimer) {
+			clearInterval(activeTimer.interval);
+			activeTimer.button.textContent = 'Devam et';
+		}
+
+		let remainingSeconds = Number(todoItem.dataset.remainingSeconds || pomodoroDuration);
+		timerButton.textContent = 'Durdur';
+		timerButton.setAttribute('aria-label', `${todoText} için Pomodoro sayacını durdur`);
+		activeTimer = { item: todoItem, button: timerButton, interval: null };
+		activeTimer.interval = setInterval(() => {
+			remainingSeconds -= 1;
+			todoItem.dataset.remainingSeconds = remainingSeconds;
+			const minutes = Math.floor(remainingSeconds / 60).toString().padStart(2, '0');
+			const seconds = (remainingSeconds % 60).toString().padStart(2, '0');
+			timerDisplay.textContent = `${minutes}:${seconds}`;
+
+			if (remainingSeconds <= 0) {
+				clearInterval(activeTimer.interval);
+				activeTimer = null;
+				timerButton.textContent = 'Süre doldu';
+				timerButton.disabled = true;
+				timerButton.setAttribute('aria-label', `${todoText} için Pomodoro süresi doldu`);
+			}
+		}, 1000);
 	});
 
 	return todoItem;
@@ -115,6 +171,10 @@ todoColumns.forEach((column) => {
 });
 
 clearAllButton.addEventListener('click', () => {
+	if (activeTimer) {
+		clearInterval(activeTimer.interval);
+		activeTimer = null;
+	}
 	todoColumns.forEach((column) => column.querySelector('.todo-list').replaceChildren());
 	saveTodos();
 });

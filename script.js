@@ -2,7 +2,10 @@ const todoColumns = [...document.querySelectorAll('.todo-column')];
 const clearAllButton = document.querySelector('#clear-all-button');
 const emptyInputMessage = document.querySelector('#empty-input-message');
 const todoCount = document.querySelector('#todo-count');
+const personalNoteInput = document.querySelector('#personal-note-input');
+const personalNoteButton = document.querySelector('#personal-note-button');
 const storageKey = 'todoItems';
+const personalNoteStorageKey = 'personalNote';
 
 function saveTodos() {
 	const todos = todoColumns.flatMap((column) => [...column.querySelectorAll('.todo-item')].map((todoItem) => ({
@@ -116,9 +119,25 @@ clearAllButton.addEventListener('click', () => {
 	saveTodos();
 });
 
+personalNoteButton.addEventListener('click', () => {
+	if (personalNoteInput.readOnly) {
+		personalNoteInput.readOnly = false;
+		personalNoteButton.textContent = 'Kaydet';
+		personalNoteInput.focus();
+		return;
+	}
+
+	personalNoteInput.value = personalNoteInput.value.trim();
+	localStorage.setItem(personalNoteStorageKey, personalNoteInput.value);
+	personalNoteInput.readOnly = true;
+	personalNoteButton.textContent = 'Düzenle';
+});
+
 const savedTodos = JSON.parse(localStorage.getItem(storageKey) || '[]');
 savedTodos.forEach((todo) => {
 	const column = todoColumns.find((item) => item.dataset.column === todo.column) || todoColumns[0];
 	column.querySelector('.todo-list').appendChild(createTodoItem(todo.text, todo.completed));
 });
 saveTodos();
+
+personalNoteInput.value = localStorage.getItem(personalNoteStorageKey) || '';

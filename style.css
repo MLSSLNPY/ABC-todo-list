@@ -34,6 +34,74 @@ h1 {
 	text-align: center;
 }
 
+.motivation-message {
+	margin: -16px 0 24px;
+	color: #6d8574;
+	font-size: 16px;
+	font-style: italic;
+	line-height: 1.5;
+	text-align: center;
+}
+
+.personal-note {
+	margin: 26px auto 0;
+	padding: 18px 20px 16px;
+	background: #f4f8e9;
+	border: 1px solid #d9e3b8;
+	border-left: 4px solid #b4c878;
+	border-radius: 8px;
+	box-shadow: 0 5px 14px rgba(96, 115, 57, 0.08);
+}
+
+.personal-note-heading {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+.personal-note-heading h2 {
+	margin: 0;
+	color: #536b39;
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.personal-note-heading span {
+	color: #a2b66c;
+	font-size: 20px;
+}
+
+.personal-note-input {
+	display: block;
+	width: 100%;
+	min-height: 76px;
+	resize: vertical;
+	color: #536044;
+	background: rgba(255, 255, 255, 0.72);
+	border-color: #d1dcae;
+	font-size: 15px;
+	line-height: 1.5;
+}
+
+.personal-note-input[readonly] {
+	cursor: default;
+}
+
+.personal-note-button {
+	display: block;
+	margin: 10px 0 0 auto;
+	padding: 8px 16px;
+	color: #536b39;
+	background: #e2ebc6;
+	border: 1px solid #c7d59a;
+	font-size: 14px;
+}
+
+.personal-note-button:hover {
+	background: #d7e3b2;
+}
+
 .todo-form {
 	display: flex;
 	gap: 10px;

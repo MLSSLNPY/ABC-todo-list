@@ -9,6 +9,7 @@
 <body>
 	<main class="todo-container">
 		<h1>ABC Stili Planlama</h1>
+		<p class="motivation-message">"Sabret! Senin sabrın ancak Allah’ın yardımı iledir..." (16/Nahl,127)</p>
 
 		<p class="empty-input-message" id="empty-input-message" role="alert" hidden>
 			<span aria-hidden="true">🙂</span>
@@ -48,6 +49,15 @@
 			<button type="button" class="clear-all-button" id="clear-all-button" aria-label="Tümünü sil" title="Tümünü sil">🗑️</button>
 		</div>
 		<p class="todo-count" id="todo-count" aria-live="polite">Toplam görev: 0</p>
+
+		<section class="personal-note" aria-labelledby="personal-note-title">
+			<div class="personal-note-heading">
+				<h2 id="personal-note-title">Kendime not</h2>
+				<span aria-hidden="true">✦</span>
+			</div>
+			<textarea id="personal-note-input" class="personal-note-input" rows="3" placeholder="Bugün kendine hatırlatmak istediğin şeyi buraya yaz..." aria-label="Kendime not" readonly></textarea>
+			<button type="button" id="personal-note-button" class="personal-note-button">Düzenle</button>
+		</section>
 	</main>
 
 	<script src="script.js"></script>

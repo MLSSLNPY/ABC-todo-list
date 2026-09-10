@@ -23,6 +23,7 @@ body {
 }
 
 .todo-container {
+	position: relative;
 	width: min(100%, 780px);
 	padding: 36px;
 	opacity: 0.7;
@@ -48,24 +49,15 @@ h1 {
 	text-align: center;
 }
 
-.background-change-button {
-	display: block;
+.view-controls {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
 	margin: -10px auto 24px;
-	padding: 8px 14px;
-	color: #536b39;
-	background: rgba(244, 248, 233, 0.9);
-	border: 1px solid #c7d59a;
-	font-size: 14px;
-	box-shadow: 0 3px 10px rgba(71, 119, 86, 0.08);
 }
 
-.background-change-button:hover {
-	background: #e2ebc6;
-}
-
+.background-change-button,
 .sound-change-button {
-	display: block;
-	margin: -14px auto 24px;
 	padding: 8px 14px;
 	color: #536b39;
 	background: rgba(244, 248, 233, 0.9);
@@ -74,8 +66,92 @@ h1 {
 	box-shadow: 0 3px 10px rgba(71, 119, 86, 0.08);
 }
 
+.background-change-button:hover,
 .sound-change-button:hover {
 	background: #e2ebc6;
+}
+
+.task-chart-section {
+	margin-top: 22px;
+	padding: 16px;
+	background: rgba(244, 248, 233, 0.55);
+	border: 1px solid rgba(201, 228, 208, 0.8);
+	border-radius: 8px;
+}
+
+.task-chart-section h2 {
+	margin: 0 0 14px;
+	color: #536b39;
+	font-size: 18px;
+	text-align: center;
+}
+
+.task-chart-content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 28px;
+}
+
+.task-chart {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 150px;
+	aspect-ratio: 1;
+	flex: 0 0 150px;
+	background: var(--chart-background);
+	border-radius: 50%;
+}
+
+.task-chart::after {
+	position: absolute;
+	width: 102px;
+	height: 102px;
+	background: #f8fcf8;
+	border-radius: 50%;
+	content: '';
+}
+
+.task-chart strong,
+.task-chart span {
+	position: relative;
+	z-index: 1;
+}
+
+.task-chart strong {
+	color: #315343;
+	font-size: 28px;
+}
+
+.task-chart span {
+	color: #6d8574;
+	font-size: 12px;
+}
+
+.task-chart-legend {
+	display: grid;
+	gap: 9px;
+	margin: 0;
+	padding: 0;
+	color: #536b39;
+	font-size: 14px;
+	list-style: none;
+}
+
+.task-chart-legend li {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.legend-color {
+	display: inline-block;
+	width: 11px;
+	height: 11px;
+	border-radius: 50%;
 }
 
 .personal-note {
@@ -476,5 +552,9 @@ button:hover {
 
 	.todo-columns {
 		grid-template-columns: 1fr;
+	}
+
+	.view-controls {
+		flex-wrap: wrap;
 	}
 }

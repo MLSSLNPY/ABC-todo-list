@@ -2,6 +2,9 @@ const todoColumns = [...document.querySelectorAll('.todo-column')];
 const clearAllButton = document.querySelector('#clear-all-button');
 const emptyInputMessage = document.querySelector('#empty-input-message');
 const todoCount = document.querySelector('#todo-count');
+const taskChart = document.querySelector('#task-chart');
+const taskChartTotal = document.querySelector('#task-chart-total');
+const taskChartLegend = document.querySelector('#task-chart-legend');
 const personalNoteInput = document.querySelector('#personal-note-input');
 const personalNoteButton = document.querySelector('#personal-note-button');
 const backgroundChangeButton = document.querySelector('#background-change-button');
@@ -20,20 +23,20 @@ const pomodoroDuration = 25 * 60;
 let activeTimer = null;
 let audioContext = null;
 let soundCleanup = null;
+let soundModeIndex = -1;
 const soundModes = [
-	{ name: 'Kuş sesi', key: 'bird' },
-	{ name: 'Yağmur sesi', key: 'rain' },
-	{ name: 'Orman sesi', key: 'forest' }
+	{ name: 'Kuş cıvıltısı', type: 'bird' },
+	{ name: 'Yağmur sesi', type: 'rain' },
+	{ name: 'Orman sesi', type: 'forest' }
 ];
+const chartColors = ['#79ad87', '#d19a00', '#6f9fbd'];
 
 function createNoiseSource(context) {
 	const buffer = context.createBuffer(1, context.sampleRate * 2, context.sampleRate);
 	const data = buffer.getChannelData(0);
-
 	for (let index = 0; index < data.length; index += 1) {
 		data[index] = Math.random() * 2 - 1;
 	}
-
 	const source = context.createBufferSource();
 	source.buffer = buffer;
 	source.loop = true;
@@ -45,7 +48,6 @@ function stopSound() {
 		soundCleanup();
 		soundCleanup = null;
 	}
-
 	if (audioContext) {
 		audioContext.close();
 		audioContext = null;
@@ -53,38 +55,41 @@ function stopSound() {
 }
 
 function startSound(mode) {
-	audioContext = new AudioContext();
+	const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+	if (!AudioContextClass) {
+		return;
+	}
+	audioContext = new AudioContextClass();
 	const context = audioContext;
-	const gain = context.createGain();
+	const output = context.createGain();
 	const sources = [];
 	const intervals = [];
-	gain.connect(context.destination);
+	output.connect(context.destination);
 
-	if (mode.key === 'bird') {
+	if (mode.type === 'bird') {
 		const playChirp = () => {
 			const oscillator = context.createOscillator();
-			const chirpGain = context.createGain();
+			const gain = context.createGain();
 			const startTime = context.currentTime;
 			oscillator.type = 'sine';
 			oscillator.frequency.setValueAtTime(1500 + Math.random() * 500, startTime);
 			oscillator.frequency.exponentialRampToValueAtTime(2600 + Math.random() * 700, startTime + 0.12);
-			chirpGain.gain.setValueAtTime(0.001, startTime);
-			chirpGain.gain.exponentialRampToValueAtTime(0.12, startTime + 0.02);
-			chirpGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.22);
-			oscillator.connect(chirpGain).connect(gain);
+			gain.gain.setValueAtTime(0.001, startTime);
+			gain.gain.exponentialRampToValueAtTime(0.12, startTime + 0.02);
+			gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.22);
+			oscillator.connect(gain).connect(output);
 			oscillator.start(startTime);
 			oscillator.stop(startTime + 0.24);
 		};
-
 		playChirp();
 		intervals.push(setInterval(playChirp, 2400));
 	} else {
 		const noise = createNoiseSource(context);
 		const filter = context.createBiquadFilter();
-		filter.type = mode.key === 'rain' ? 'lowpass' : 'lowpass';
-		filter.frequency.value = mode.key === 'rain' ? 3200 : 500;
-		gain.gain.value = mode.key === 'rain' ? 0.06 : 0.045;
-		noise.connect(filter).connect(gain);
+		filter.type = 'lowpass';
+		filter.frequency.value = mode.type === 'rain' ? 3200 : 500;
+		output.gain.value = mode.type === 'rain' ? 0.06 : 0.045;
+		noise.connect(filter).connect(output);
 		noise.start();
 		sources.push(noise);
 	}
@@ -97,7 +102,7 @@ function startSound(mode) {
 
 function updateSoundButton() {
 	const mode = soundModeIndex === -1 ? null : soundModes[soundModeIndex];
-	soundChangeButton.textContent = `Ses: ${mode ? mode.name : 'Kapalı'}`;
+	soundChangeButton.textContent = `Focus: ${mode ? mode.name : 'Kapalı'}`;
 	soundChangeButton.setAttribute('aria-pressed', String(Boolean(mode)));
 }
 
@@ -115,6 +120,29 @@ function saveTodos() {
 
 	localStorage.setItem(storageKey, JSON.stringify(todos));
 	todoCount.textContent = `Toplam görev: ${todos.length}`;
+	updateTaskChart(todos);
+}
+
+function updateTaskChart(todos) {
+	const pendingCounts = ['A', 'B', 'C'].map((column) => todos.filter((todo) => todo.column === column && !todo.completed).length);
+	const pendingTotal = pendingCounts.reduce((sum, count) => sum + count, 0);
+	let currentAngle = 0;
+	const slices = pendingCounts.map((count, index) => {
+		const startAngle = currentAngle;
+		currentAngle += pendingTotal ? (count / pendingTotal) * 360 : 0;
+		return `${chartColors[index]} ${startAngle}deg ${currentAngle}deg`;
+	});
+	taskChart.style.setProperty('--chart-background', pendingTotal
+		? `conic-gradient(${slices.join(', ')})`
+		: 'conic-gradient(#d8dedb 0deg 360deg)');
+	taskChartTotal.textContent = pendingTotal.toString();
+	taskChart.setAttribute('aria-label', `${pendingTotal} tamamlanmamış görev`);
+	taskChartLegend.replaceChildren();
+	['A', 'B', 'C'].forEach((column, index) => {
+		const legendItem = document.createElement('li');
+		legendItem.innerHTML = `<span class="legend-color" style="background: ${chartColors[index]}"></span>${column} sütunu: ${pendingCounts[index]}`;
+		taskChartLegend.appendChild(legendItem);
+	});
 }
 
 function createTodoItem(todoText, completed = false) {
@@ -307,9 +335,7 @@ backgroundChangeButton.addEventListener('click', () => {
 });
 
 const savedSoundIndex = Number.parseInt(localStorage.getItem(soundStorageKey) || '-1', 10);
-let soundModeIndex = Number.isInteger(savedSoundIndex) && savedSoundIndex >= -1 && savedSoundIndex < soundModes.length
-	? savedSoundIndex
-	: -1;
+soundModeIndex = Number.isInteger(savedSoundIndex) && savedSoundIndex >= -1 && savedSoundIndex < soundModes.length ? savedSoundIndex : -1;
 updateSoundButton();
 
 soundChangeButton.addEventListener('click', () => {

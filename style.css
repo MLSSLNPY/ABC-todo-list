@@ -63,6 +63,21 @@ h1 {
 	background: #e2ebc6;
 }
 
+.sound-change-button {
+	display: block;
+	margin: -14px auto 24px;
+	padding: 8px 14px;
+	color: #536b39;
+	background: rgba(244, 248, 233, 0.9);
+	border: 1px solid #c7d59a;
+	font-size: 14px;
+	box-shadow: 0 3px 10px rgba(71, 119, 86, 0.08);
+}
+
+.sound-change-button:hover {
+	background: #e2ebc6;
+}
+
 .personal-note {
 	margin: 22px auto 0;
 	padding: 14px 16px;

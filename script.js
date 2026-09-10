@@ -5,9 +5,11 @@ const todoCount = document.querySelector('#todo-count');
 const personalNoteInput = document.querySelector('#personal-note-input');
 const personalNoteButton = document.querySelector('#personal-note-button');
 const backgroundChangeButton = document.querySelector('#background-change-button');
+const soundChangeButton = document.querySelector('#sound-change-button');
 const storageKey = 'todoItems';
 const personalNoteStorageKey = 'personalNote';
 const backgroundStorageKey = 'backgroundImageIndex';
+const soundStorageKey = 'soundModeIndex';
 const backgroundImages = [
 	'beautiful-landscape-with-lot-fir-trees-mountains.jpg',
 	'beautiful-shot-forest-with-yellow-green-leafed-trees-with-sun-shining-through-branches.jpg',
@@ -16,6 +18,88 @@ const backgroundImages = [
 ];
 const pomodoroDuration = 25 * 60;
 let activeTimer = null;
+let audioContext = null;
+let soundCleanup = null;
+const soundModes = [
+	{ name: 'Kuş sesi', key: 'bird' },
+	{ name: 'Yağmur sesi', key: 'rain' },
+	{ name: 'Orman sesi', key: 'forest' }
+];
+
+function createNoiseSource(context) {
+	const buffer = context.createBuffer(1, context.sampleRate * 2, context.sampleRate);
+	const data = buffer.getChannelData(0);
+
+	for (let index = 0; index < data.length; index += 1) {
+		data[index] = Math.random() * 2 - 1;
+	}
+
+	const source = context.createBufferSource();
+	source.buffer = buffer;
+	source.loop = true;
+	return source;
+}
+
+function stopSound() {
+	if (soundCleanup) {
+		soundCleanup();
+		soundCleanup = null;
+	}
+
+	if (audioContext) {
+		audioContext.close();
+		audioContext = null;
+	}
+}
+
+function startSound(mode) {
+	audioContext = new AudioContext();
+	const context = audioContext;
+	const gain = context.createGain();
+	const sources = [];
+	const intervals = [];
+	gain.connect(context.destination);
+
+	if (mode.key === 'bird') {
+		const playChirp = () => {
+			const oscillator = context.createOscillator();
+			const chirpGain = context.createGain();
+			const startTime = context.currentTime;
+			oscillator.type = 'sine';
+			oscillator.frequency.setValueAtTime(1500 + Math.random() * 500, startTime);
+			oscillator.frequency.exponentialRampToValueAtTime(2600 + Math.random() * 700, startTime + 0.12);
+			chirpGain.gain.setValueAtTime(0.001, startTime);
+			chirpGain.gain.exponentialRampToValueAtTime(0.12, startTime + 0.02);
+			chirpGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.22);
+			oscillator.connect(chirpGain).connect(gain);
+			oscillator.start(startTime);
+			oscillator.stop(startTime + 0.24);
+		};
+
+		playChirp();
+		intervals.push(setInterval(playChirp, 2400));
+	} else {
+		const noise = createNoiseSource(context);
+		const filter = context.createBiquadFilter();
+		filter.type = mode.key === 'rain' ? 'lowpass' : 'lowpass';
+		filter.frequency.value = mode.key === 'rain' ? 3200 : 500;
+		gain.gain.value = mode.key === 'rain' ? 0.06 : 0.045;
+		noise.connect(filter).connect(gain);
+		noise.start();
+		sources.push(noise);
+	}
+
+	soundCleanup = () => {
+		intervals.forEach((interval) => clearInterval(interval));
+		sources.forEach((source) => source.stop());
+	};
+}
+
+function updateSoundButton() {
+	const mode = soundModeIndex === -1 ? null : soundModes[soundModeIndex];
+	soundChangeButton.textContent = `Ses: ${mode ? mode.name : 'Kapalı'}`;
+	soundChangeButton.setAttribute('aria-pressed', String(Boolean(mode)));
+}
 
 function setBackground(index) {
 	document.body.style.backgroundImage = `url("resimler/${backgroundImages[index]}")`;
@@ -220,6 +304,24 @@ setBackground(backgroundIndex);
 backgroundChangeButton.addEventListener('click', () => {
 	backgroundIndex = (backgroundIndex + 1) % backgroundImages.length;
 	setBackground(backgroundIndex);
+});
+
+const savedSoundIndex = Number.parseInt(localStorage.getItem(soundStorageKey) || '-1', 10);
+let soundModeIndex = Number.isInteger(savedSoundIndex) && savedSoundIndex >= -1 && savedSoundIndex < soundModes.length
+	? savedSoundIndex
+	: -1;
+updateSoundButton();
+
+soundChangeButton.addEventListener('click', () => {
+	stopSound();
+	soundModeIndex = (soundModeIndex + 1) % (soundModes.length + 1);
+	if (soundModeIndex === soundModes.length) {
+		soundModeIndex = -1;
+	} else {
+		startSound(soundModes[soundModeIndex]);
+	}
+	localStorage.setItem(soundStorageKey, soundModeIndex.toString());
+	updateSoundButton();
 });
 
 const savedTodos = JSON.parse(localStorage.getItem(storageKey) || '[]');

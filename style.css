@@ -34,6 +34,7 @@ body {
 }
 
 h1 {
+	width: 52%;
 	margin: 0 0 28px;
 	color: #2f6345;
 	font-size: 32px;
@@ -41,6 +42,7 @@ h1 {
 }
 
 .motivation-message {
+	width: 52%;
 	margin: -16px 0 24px;
 	color: #6d8574;
 	font-size: 16px;
@@ -50,10 +52,11 @@ h1 {
 }
 
 .view-controls {
+	width: 52%;
 	display: flex;
 	justify-content: center;
 	gap: 10px;
-	margin: -10px auto 24px;
+	margin: -10px 0 24px;
 }
 
 .background-change-button,
@@ -72,17 +75,21 @@ h1 {
 }
 
 .task-chart-section {
-	margin-top: 22px;
-	padding: 16px;
+	position: absolute;
+	top: 36px;
+	right: 36px;
+	width: 42%;
+	margin: 0;
+	padding: 10px;
 	background: rgba(244, 248, 233, 0.55);
 	border: 1px solid rgba(201, 228, 208, 0.8);
 	border-radius: 8px;
 }
 
 .task-chart-section h2 {
-	margin: 0 0 14px;
+	margin: 0 0 8px;
 	color: #536b39;
-	font-size: 18px;
+	font-size: 14px;
 	text-align: center;
 }
 
@@ -90,7 +97,7 @@ h1 {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 28px;
+	gap: 12px;
 }
 
 .task-chart {
@@ -99,17 +106,17 @@ h1 {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	width: 150px;
+	width: 75px;
 	aspect-ratio: 1;
-	flex: 0 0 150px;
+	flex: 0 0 75px;
 	background: var(--chart-background);
 	border-radius: 50%;
 }
 
 .task-chart::after {
 	position: absolute;
-	width: 102px;
-	height: 102px;
+	width: 51px;
+	height: 51px;
 	background: #f8fcf8;
 	border-radius: 50%;
 	content: '';
@@ -123,21 +130,21 @@ h1 {
 
 .task-chart strong {
 	color: #315343;
-	font-size: 28px;
+	font-size: 16px;
 }
 
 .task-chart span {
 	color: #6d8574;
-	font-size: 12px;
+	font-size: 8px;
 }
 
 .task-chart-legend {
 	display: grid;
-	gap: 9px;
+	gap: 4px;
 	margin: 0;
 	padding: 0;
 	color: #536b39;
-	font-size: 14px;
+	font-size: 10px;
 	list-style: none;
 }
 
@@ -149,13 +156,26 @@ h1 {
 
 .legend-color {
 	display: inline-block;
-	width: 11px;
-	height: 11px;
+	width: 7px;
+	height: 7px;
 	border-radius: 50%;
 }
 
+.task-summary {
+	display: grid;
+	grid-template-columns: minmax(100px, 0.7fr) minmax(0, 2fr);
+	align-items: start;
+	gap: 18px;
+	margin-top: 22px;
+}
+
+.task-summary-status {
+	min-width: 0;
+}
+
 .personal-note {
-	margin: 22px auto 0;
+	min-width: 0;
+	margin: 0;
 	padding: 14px 16px;
 	background: rgba(244, 248, 233, 0.5);
 	border: 1px solid rgba(217, 227, 184, 0.5);
@@ -227,7 +247,7 @@ h1 {
 .todo-column {
 	min-width: 0;
 	padding: 16px;
-	background: #eef8f0;
+	background: #dcefe1;
 	border: 1px solid #c9e4d0;
 	border-radius: 8px;
 }
@@ -313,8 +333,8 @@ button:hover {
 
 .list-actions {
 	display: flex;
-	justify-content: flex-end;
-	margin-top: 18px;
+	justify-content: flex-start;
+	margin-top: 0;
 }
 
 .clear-all-button {
@@ -379,7 +399,7 @@ button:hover {
 	margin: 14px 0 0;
 	color: #6d8574;
 	font-size: 14px;
-	text-align: right;
+	text-align: left;
 }
 
 .todo-item {
@@ -470,19 +490,24 @@ button:hover {
 
 .edit-button {
 	flex: 0 0 auto;
-	padding: 3px 7px;
+	width: 30px;
+	height: 30px;
+	padding: 0;
 	color: #d19a00;
 	background: transparent;
+	border: 1px solid transparent;
+	border-radius: 50%;
 	line-height: 1;
+	transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .pencil-icon {
 	display: inline-block;
 	position: relative;
-	width: 16px;
-	height: 6px;
+	width: 14px;
+	height: 4px;
 	background: currentColor;
-	border-radius: 2px 1px 1px 2px;
+	border-radius: 2px;
 	transform: rotate(-45deg);
 	vertical-align: middle;
 }
@@ -490,11 +515,11 @@ button:hover {
 .pencil-icon::before {
 	content: '';
 	position: absolute;
-	right: -5px;
+	right: -4px;
 	top: 0;
-	border-top: 3px solid transparent;
-	border-bottom: 3px solid transparent;
-	border-left: 5px solid currentColor;
+	border-top: 2px solid transparent;
+	border-bottom: 2px solid transparent;
+	border-left: 4px solid currentColor;
 }
 
 .pencil-icon::after {
@@ -503,13 +528,14 @@ button:hover {
 	left: 2px;
 	top: 0;
 	width: 2px;
-	height: 6px;
+	height: 4px;
 	background: rgba(255, 255, 255, 0.7);
 }
 
 .edit-button:hover {
 	color: #a97800;
-	background: #fff3c4;
+	background: rgba(255, 243, 196, 0.75);
+	border-color: #ead68c;
 }
 
 .edit-button .pencil-icon {
@@ -523,22 +549,82 @@ button:hover {
 
 .delete-button {
 	flex: 0 0 auto;
-	padding: 7px 11px;
-	color: #ffffff;
-	background: #8d9691;
-	border: 1px solid #7b837e;
+	width: 30px;
+	height: 30px;
+	padding: 0;
+	color: #7b8780;
+	background: transparent;
+	border: 1px solid transparent;
+	border-radius: 50%;
 	font-size: 0;
 	line-height: 1;
-	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .delete-button .trash-icon {
-	color: #ffffff;
+	color: currentColor;
 }
 
 .delete-button:hover {
-	transform: scale(1.06);
-	box-shadow: 0 0 10px rgba(233, 139, 170, 0.65);
+	color: #a35f68;
+	background: rgba(245, 222, 224, 0.75);
+	border-color: #e4bfc4;
+}
+
+@media (max-width: 700px) {
+	.todo-container {
+		padding-top: 26px;
+	}
+
+	h1,
+	.motivation-message,
+	.view-controls {
+		width: 100%;
+	}
+
+	.task-chart-section {
+		position: static;
+		width: 100%;
+		margin-top: 22px;
+		padding: 16px;
+	}
+
+	.task-chart-section h2 {
+		margin-bottom: 14px;
+		font-size: 18px;
+	}
+
+	.task-chart-content {
+		gap: 18px;
+	}
+
+	.task-chart {
+		width: 100px;
+		flex-basis: 100px;
+	}
+
+	.task-chart::after {
+		width: 68px;
+		height: 68px;
+	}
+
+	.task-chart strong {
+		font-size: 22px;
+	}
+
+	.task-chart span {
+		font-size: 10px;
+	}
+
+	.task-chart-legend {
+		gap: 7px;
+		font-size: 12px;
+	}
+
+	.legend-color {
+		width: 9px;
+		height: 9px;
+	}
 }
 
 @media (max-width: 480px) {
@@ -556,5 +642,14 @@ button:hover {
 
 	.view-controls {
 		flex-wrap: wrap;
+	}
+
+	.task-summary {
+		grid-template-columns: 1fr;
+		gap: 0;
+	}
+
+	.personal-note {
+		margin-top: 22px;
 	}
 }

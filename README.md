@@ -1,4 +1,4 @@
-# ABC Stili Çalışma Sistemi
+# ABC Stili Çalışma Sistemi 🌼
 
 * İşlerinizi yönetirken günlük, haftalık, aylık olarak planlama yapabileceğiniz bir sistemdir.
 A, B ve C diye işler bulunmaktadır.
